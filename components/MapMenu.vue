@@ -1,11 +1,7 @@
 <template>
   <div>
-    <!-- Menu Toggle Icon -->
-    <div id="call-menu" @click="toggleMenu">
-      <img :src="showMenu ? '/menu_point_top_left.svg' : '/menu_point_bot_right.svg'" />
-    </div>
+    <MenuToggler id="toggle-info" :initialState="showMenu" @toggle-menu="handleToggleMenu" />
 
-    <!-- Data Menu -->
     <div id="data-menu" :class="{ 'menu-hidden': !showMenu }">
       <h1>{{ worldName }}</h1>
       <div class="exhibit-sizes">
@@ -28,8 +24,13 @@
 </template>
 
 <script>
+import MenuToggler from './MenuToggler.vue';
+
 export default {
-  name: 'MapHeader',
+  name: 'MapMenu',
+  components: {
+    MenuToggler
+  },
   props: {
     worldName: { type: String, required: true },
     mapHeight: { type: Number, required: true },
@@ -45,27 +46,14 @@ export default {
     };
   },
   methods: {
-    toggleMenu() {
-      this.showMenu = !this.showMenu;
+    handleToggleMenu(isVisible) {
+      this.showMenu = isVisible;
     }
   }
 };
 </script>
 
 <style scoped>
-#call-menu {
-  position: absolute;
-  top: 0.5em;
-  left: 0.5em;
-  cursor: pointer;
-}
-
-img {
-  width: 2em;
-  position: absolute;
-  z-index: 1;
-}
-
 #data-menu {
   display: flex;
   flex-direction: column;
