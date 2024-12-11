@@ -10,7 +10,9 @@
 </template>
 
 <script>
-export default {
+import { defineComponent, computed } from 'vue';
+
+export default defineComponent({
   name: 'LandmassAsset',
   props: {
     properties: {
@@ -18,13 +20,19 @@ export default {
       required: true
     }
   },
-  computed: {
-    polygonPoints() {
-      return this.properties.path.map((point) => `${point.x},${point.y}`).join(" ");
-    },
-    color() {
-      return this.properties.color || "lightgreen";
-    }
+  setup(props) {
+    const polygonPoints = computed(() => {
+      return props.properties.path.map((point) => `${point.x},${point.y}`).join(" ");
+    });
+
+    const color = computed(() => {
+      return props.properties.color || "lightgreen";
+    });
+
+    return {
+      polygonPoints,
+      color
+    };
   }
-};
+});
 </script>
