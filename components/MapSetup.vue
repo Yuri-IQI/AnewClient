@@ -9,12 +9,14 @@
       <div id="sizes">
         <input
           id="real-y"
+          class="dimension"
           v-model.number="localMapHeight"
           type="number"
           placeholder="Map Height (Km)"
         />
         <input
           id="real-x"
+          class="dimension"
           v-model.number="localMapWidth"
           type="number"
           placeholder="Map Width (Km)"
@@ -25,8 +27,8 @@
       id="bt-create"
       type="button"
       @click="emitWorldSetup"
-      :class="{ 'disabled-button': isisSetup }"
-      :disabled="isisSetup"
+      :class="{ 'disabled-button': hasBeenSetup }"
+      :disabled="hasBeenSetup"
     >
       Create
     </button>
@@ -34,7 +36,9 @@
 </template>
 
 <script>
-export default {
+import { defineComponent, ref, computed, watch } from 'vue';
+
+export default defineComponent({
   name: 'MapSetup',
   props: {
     worldName: {
@@ -54,35 +58,40 @@ export default {
       default: false,
     }
   },
-  data() {
-    return {
-      localWorldName: this.worldName,
-      localMapHeight: this.mapHeight,
-      localMapWidth: this.mapWidth,
+  setup(props, { emit }) {
+    const localWorldName = ref(props.worldName);
+    const localMapHeight = ref(props.mapHeight);
+    const localMapWidth = ref(props.mapWidth);
+
+    const hasBeenSetup = computed(() => {
+      return props.isSetup || !localWorldName.value || localMapHeight.value <= 0 || localMapWidth.value <= 0;
+    });
+
+    const emitWorldSetup = () => {
+      emit('getWorldSetup', localWorldName.value, localMapHeight.value, localMapWidth.value);
     };
-  },
-  computed: {
-    isisSetup() {
-      return this.isSetup || !this.localWorldName || this.localMapHeight <= 0 || this.localMapWidth <= 0;
-    },
-  },
-  methods: {
-    emitWorldSetup() {
-      this.$emit('getWorldSetup', this.localWorldName, this.localMapHeight, this.localMapWidth);
-    },
-  },
-  watch: {
-    worldName(newVal) {
-      this.localWorldName = newVal;
-    },
-    mapHeight(newVal) {
-      this.localMapHeight = newVal;
-    },
-    mapWidth(newVal) {
-      this.localMapWidth = newVal;
-    },
-  },
-};
+
+    watch(() => props.worldName, (newVal) => {
+      localWorldName.value = newVal;
+    });
+
+    watch(() => props.mapHeight, (newVal) => {
+      localMapHeight.value = newVal;
+    });
+
+    watch(() => props.mapWidth, (newVal) => {
+      localMapWidth.value = newVal;
+    });
+
+    return {
+      localWorldName,
+      localMapHeight,
+      localMapWidth,
+      hasBeenSetup,
+      emitWorldSetup
+    };
+  }
+});
 </script>
 
 <style scoped>
@@ -151,5 +160,9 @@ input[type=number] {
   background-color: #444;
   color: #666;
   cursor: not-allowed;
+}
+
+.dimension {
+  width: 50%;
 }
 </style>

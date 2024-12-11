@@ -25,18 +25,18 @@ export default {
   name: 'MapCanvas',
   props: {
     selectedAsset: {
-      type: Object, // Expect the actual component or a metadata object describing the asset
+      type: Object,
       required: true
     }
   },
   data() {
     return {
-      assets: [], // Holds all the instantiated assets on the map
+      assets: [],
       isDrawing: false,
-      currentPath: [], // Tracks the points of the current drawing path
+      currentPath: [],
       startX: 0,
       startY: 0,
-      threshold: 10 // Distance threshold to close the loop
+      threshold: 10
     };
   },
   computed: {
@@ -81,7 +81,6 @@ export default {
       );
 
       if (distanceToStart <= this.threshold) {
-        // Close the loop and add the landmass
         this.addAsset(this.currentPath);
       }
 
@@ -91,8 +90,8 @@ export default {
     addAsset(path) {
       this.assets.push({
         component: this.selectedAsset,
-        x: 0, // Not used for landmass; pass it as part of properties instead
-        y: 0, // Not used for landmass; pass it as part of properties instead
+        x: 0,
+        y: 0,
         properties: {
           path
         }

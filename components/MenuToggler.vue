@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { ref } from 'vue';
+
 export default {
   name: 'MenuToggler',
   props: {
@@ -13,16 +15,18 @@ export default {
       default: false
     }
   },
-  data() {
-    return {
-      showMenu: this.initialState
+  setup(props, { emit }) {
+    const showMenu = ref(props.initialState);
+
+    const toggleMenu = () => {
+      showMenu.value = !showMenu.value;
+      emit('toggle-menu', showMenu.value);
     };
-  },
-  methods: {
-    toggleMenu() {
-      this.showMenu = !this.showMenu;
-      this.$emit('toggle-menu', this.showMenu);
-    }
+
+    return {
+      showMenu,
+      toggleMenu
+    };
   }
 };
 </script>
