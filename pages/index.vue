@@ -7,14 +7,14 @@
       :mapWidth="worldWidth"
       @getWorldSetup="getWorldSetup"
     />
-    
+
     <MapScaler
       v-if="isSetup && !scaleCalculated"
       :mapHeight="worldHeight"
       :mapWidth="worldWidth"
       @scaleCalculated="handleScaleCalculated"
     />
-    
+
     <MapMenu
       v-if="scaleCalculated"
       :worldName="worldName"
@@ -58,8 +58,8 @@ export default {
   },
   setup() {
     const worldName = ref('');
-    const worldHeight = ref(null);
-    const worldWidth = ref(null);
+    const worldHeight = ref();
+    const worldWidth = ref();
     const isSetup = ref(false);
     const scaleCalculated = ref(false);
     const scale = ref(1);
@@ -83,7 +83,6 @@ export default {
 
     const onAssetSelected = (asset) => {
       selectedAsset.value = asset;
-      console.log('Selected Asset:', asset);
     };
 
     return {

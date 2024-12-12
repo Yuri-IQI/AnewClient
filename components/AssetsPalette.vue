@@ -6,7 +6,7 @@
       <div 
         v-for="asset in assets" 
         :key="asset.name"
-        :class="{ selected: selectedAsset === asset.name }"
+        :class="{ selected: selectedAsset.value === asset.name }"
         @click="selectAsset(asset.name)"
       >
         {{ asset.name }}
@@ -16,44 +16,53 @@
 </template>
 
 <script>
+import { ref, computed, watch, defineComponent } from 'vue';
 import MenuToggler from './MenuToggler.vue';
-import LandmassAsset from './MapAssets/LandmassAsset.vue'
-import RiverAsset from './MapAssets/RiverAsset.vue'
-import CityAsset from './MapAssets/CityAsset.vue'
-import LandRouteAsset from './MapAssets/LandRouteAsset.vue'
+import LandmassAsset from './MapAssets/LandmassAsset.vue';
+import RiverAsset from './MapAssets/RiverAsset.vue';
+import CityAsset from './MapAssets/CityAsset.vue';
+import LandRouteAsset from './MapAssets/LandRouteAsset.vue';
 
-export default {
+export default defineComponent({
   name: 'AssetsPalette',
-  components: {
-    MenuToggler
-  },
+  components: { MenuToggler },
   props: {
     selected: { type: Object, required: true },
     onMenu: { type: Boolean, default: false }
   },
-  data() {
-    return {
-      showMenu: this.onMenu,
-      assets: [
-        {name: 'Landmass', component: LandmassAsset},
-        {name: 'River', component: RiverAsset},
-        {name: 'City', component: CityAsset},
-        {name: 'Land Route', component: LandRouteAsset}
-      ],
-      selectedAsset: this.selected || LandmassAsset
+  setup(props, { emit }) {
+    const showMenu = ref(props.onMenu);
+    const selectedAsset = ref(props.selected || 'Landmass');
+    const assets = ref([
+      { name: 'Landmass', component: LandmassAsset },
+      { name: 'River', component: RiverAsset },
+      { name: 'City', component: CityAsset },
+      { name: 'Land Route', component: LandRouteAsset }
+    ]);
+
+    const selectAsset = (assetName) => {
+      selectedAsset.value = assetName;
+      const selected = assets.value.find(asset => asset.name === assetName);
+      emit('update:selected', selected.component);
     };
-  },
-  methods: {
-    selectAsset(assetName) {
-      this.selectedAsset = assetName;
-      const selected = this.assets.find(asset => asset.name === assetName);
-      this.$emit('update:selected', selected.component);
-    },
-    handleToggleMenu(isVisible) {
-      this.showMenu = isVisible;
-    }
+
+    const handleToggleMenu = (isVisible) => {
+      showMenu.value = isVisible;
+    };
+
+    watch(() => props.selected, (newSelected) => {
+      selectedAsset.value = newSelected;
+    });
+
+    return {
+      showMenu,
+      selectedAsset,
+      assets,
+      selectAsset,
+      handleToggleMenu
+    };
   }
-};
+});
 </script>
 
 <style scoped>
@@ -91,10 +100,10 @@ export default {
 }
 
 #toggle-palette {
-	right: 0em;
-	position: absolute;
-	transform: rotate(90deg);
-	transform-origin: center;
-	top: 0em;
+  right: 0em;
+  position: absolute;
+  transform: rotate(90deg);
+  transform-origin: center;
+  top: 0em;
 }
 </style>

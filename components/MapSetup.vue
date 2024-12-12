@@ -41,17 +41,20 @@ import { defineComponent, ref, computed, watch } from 'vue';
 export default defineComponent({
   name: 'MapSetup',
   props: {
-    worldName: {
-      type: String,
-      required: true,
-    },
     mapHeight: {
       type: Number,
       required: true,
+      default: 0,
     },
     mapWidth: {
       type: Number,
       required: true,
+      default: 0,
+    },
+    worldName: {
+      type: String,
+      required: true,
+      default: '',
     },
     isSetup: {
       type: Boolean,

@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { onMounted } from 'vue';
+
 export default {
   name: 'MapScaler',
   props: {
@@ -17,20 +19,21 @@ export default {
       required: true,
     },
   },
-  mounted() {
-    this.calculateScale();
-  },
-  methods: {
-    calculateScale() {
+  setup(props, { emit }) {
+    const calculateScale = () => {
       const windowWidthCm = (window.innerWidth / 96) * 2.54;
       const windowHeightCm = (window.innerHeight / 96) * 2.54;
 
-      const widthScale = this.mapWidth * 1000 / windowWidthCm;
-      const heightScale = this.mapHeight * 1000 / windowHeightCm;
+      const widthScale = (props.mapWidth * 1000) / windowWidthCm;
+      const heightScale = (props.mapHeight * 1000) / windowHeightCm;
       const scale = Math.min(widthScale, heightScale);
 
-      this.$emit('scaleCalculated', scale, windowHeightCm, windowWidthCm);
-    },
+      emit('scaleCalculated', scale, windowHeightCm, windowWidthCm);
+    };
+
+    onMounted(() => {
+      calculateScale();
+    });
   },
 };
 </script>
