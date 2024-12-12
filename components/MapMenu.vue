@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="{ 'unseen': !showMenu }">
     <MenuToggler id="toggle-info" :initialState="showMenu" @toggle-menu="handleToggleMenu" />
 
     <div id="data-menu" :class="{ 'menu-hidden': !showMenu }">
@@ -55,21 +55,16 @@ export default {
 
 <style scoped>
 #data-menu {
-  display: flex;
-  flex-direction: column;
-  width: 18%;
-  gap: 1em;
-  background-color: antiquewhite;
-  padding: 1em;
-  height: 96vh;
-  position: fixed;
-  justify-content: center;
-  transition: transform 0.3s ease;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  left: 10%;
-  border-radius: 8px;
-  border: 2px solid black;
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+	background-color: antiquewhite;
+	justify-content: center;
+	transition: transform 0.3s ease;
+	border-radius: 8px;
+	border: 2px solid black;
+	padding: 1em;
+	margin: 1em;
 }
 
 .menu-hidden {
@@ -84,5 +79,10 @@ span {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+}
+
+#toggle-info {
+	position: absolute;
+	top: 0em;
 }
 </style>

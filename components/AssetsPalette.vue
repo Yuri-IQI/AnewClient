@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="{ 'unseen': !showMenu }">
     <MenuToggler id="toggle-palette" :initialState="showMenu" @toggle-menu="handleToggleMenu" />
 
     <div id="assets-palette" :class="{ 'menu-hidden': !showMenu }">
@@ -67,19 +67,15 @@ export default defineComponent({
 
 <style scoped>
 #assets-palette {
-  position: fixed;
-  right: 0.5em;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: antiquewhite;
-  padding: 1em;
-  border-radius: 8px;
-  border: 2px solid black;
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  width: 10%;
-  transition: transform 0.3s ease;
+	background-color: antiquewhite;
+	border-radius: 8px;
+	border: 2px solid black;
+	display: flex;
+	flex-direction: column;
+	gap: 1em;
+	transition: transform 0.3s ease;
+	padding: 1em;
+	margin: 1em;
 }
 
 .menu-hidden {

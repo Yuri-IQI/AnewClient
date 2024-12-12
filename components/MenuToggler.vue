@@ -40,5 +40,6 @@ img {
   width: 2em;
   position: absolute;
   z-index: 1;
+  margin: 0.1em;
 }
 </style>

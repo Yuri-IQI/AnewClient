@@ -1,6 +1,6 @@
 <template>
   <div class="drawing-container" @mousedown="startDrawing" @mousemove="draw" @mouseup="stopDrawing">
-    <svg ref="svg" width="100%" height="100%">
+    <svg ref="svg" class="drawing-svg" width="100%" height="100%">
       <polyline
         v-if="isDrawing"
         :points="temporaryLinePoints"
@@ -124,17 +124,12 @@ export default defineComponent({
 <style scoped>
 .drawing-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   background-color: #f9f9f9;
   border: 2px solid black;
   border-radius: 10px;
-  width: 820px;
-  height: 620px;
   overflow: hidden;
+  margin: 0.2em;
+  width: 100%;
+  height: 90%;
 }
 </style>

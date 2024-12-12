@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="all-mighty-container">
     <MapSetup
       v-if="!isSetup"
       :worldName="worldName"
@@ -25,15 +25,15 @@
       :displayWidth="displayWidth"
     />
 
+    <MapCanvas 
+      v-if="scaleCalculated" 
+      :selectedAsset="selectedAsset" 
+    />
+
     <AssetsPalette 
       v-if="scaleCalculated" 
       :selected="selectedAsset" 
       @update:selected="onAssetSelected" 
-    />
-
-    <MapCanvas 
-      v-if="scaleCalculated" 
-      :selectedAsset="selectedAsset" 
     />
   </div>
 </template>
@@ -102,3 +102,21 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+#all-mighty-container {
+  display: flex;
+  justify-content: space-between;
+  height: 100vh;
+  align-items: center;
+}
+
+.unseen {
+  width: 32px;
+  height: 0px;
+}
+
+body {
+  overflow: hidden;
+}
+</style>
